@@ -45,7 +45,7 @@ chromedriver_path = "/path/to/chromedriver"
 To run the functional tests, use the following command:
 
 ```sh
-python -m unittest functional_tests.py
+python3 -m unittest functional_tests.py
 ```
 
 ### Step 2: Run UI/UX Tests
@@ -53,7 +53,7 @@ python -m unittest functional_tests.py
 To run the UI/UX tests, use the following command:
 
 ```sh
-python -m unittest uiux_tests.py
+python3 -m unittest uiux_tests.py
 ```
 
 ### Functional Tests
