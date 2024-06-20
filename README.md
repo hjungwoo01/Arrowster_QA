@@ -7,8 +7,8 @@
 First, clone the repository to your local machine using Git.
 
 ```sh
-git clone https://github.com/yourusername/yourrepository.git
-cd yourrepository
+git clone https://github.com/hjungwoo01/Arrowster_QA.git
+cd Arrowster_QA
 ```
 
 ### Step 2: Set Up a Virtual Environment
