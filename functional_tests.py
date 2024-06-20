@@ -36,6 +36,7 @@ class FunctionalTests(unittest.TestCase):
             gpa_field = self.wait.until(EC.presence_of_element_located((By.XPATH, "//input[@placeholder='GPA']")))
             gpa_field.send_keys("4.0")
             print("Entered GPA")
+            time.sleep(2)
             
             # Click and select Grade Level
             grade_level_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[contains(text(), 'Grade Level')]")))
@@ -43,6 +44,7 @@ class FunctionalTests(unittest.TestCase):
             first_choice = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@role='menuitem'][1]")))
             first_choice.click()
             print("Selected Grade Level: Undergraduate")
+            time.sleep(2)
             
             # Click and select Location
             location_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[contains(text(), 'Location')]")))
@@ -50,6 +52,7 @@ class FunctionalTests(unittest.TestCase):
             first_choice = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@role='menuitem'][1]")))
             first_choice.click()
             print("Selected Location: United States")
+            time.sleep(2)
             
             # Click and select Budget
             budget_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[contains(text(), 'Budget')]")))
@@ -57,6 +60,7 @@ class FunctionalTests(unittest.TestCase):
             first_choice = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@role='menuitem'][1]")))
             first_choice.click()
             print("Selected Budget: $500 - $10,000")
+            time.sleep(2)
             
             # Click and select Course Preference
             course_preference_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[contains(text(), 'Course Preference')]")))
@@ -64,16 +68,17 @@ class FunctionalTests(unittest.TestCase):
             first_choice = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@role='menuitem'][1]")))
             first_choice.click()
             print("Selected Course Preference: Agricultural Sciences")
+            time.sleep(2)
             
             # Click the "Run Recommendation Engine" button
             run_button = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Run Recommendation Engine')]")))
             run_button.click()
             print("Clicked 'Run Recommendation Engine' button")
             
-            # Wait for the next page to load or for results to be displayed
-            # This part may need adjustment based on actual behavior of the page
-            self.wait.until(EC.presence_of_element_located((By.XPATH, "//div[contains(text(), 'Results')]")))
-            print("Recommendation results displayed")
+            # Wait for the next page to load 
+            self.wait.until(EC.url_contains("/school-recommendation"))
+            print("Recommendation successful, redirected to recommendation page")
+            self.assertTrue("/school-recommendation" in self.driver.current_url)
             
             print("Recommendation form test passed")
         except Exception as e:
@@ -114,8 +119,26 @@ class FunctionalTests(unittest.TestCase):
         self.driver.get(f"{base_url}/connection")
         print("Navigated to connections page") # Ensure user is logged in
         
-        self.driver.get(f"{base_url}/student-profile")
-        print("Navigated to student profile page")
+        try:
+            self.driver.get(f"{base_url}/student-profile")
+            print("Navigated to student profile page")
+            name_field = self.wait.until(EC.presence_of_element_located((By.ID, "name")))
+            name_field.clear()
+            name_field.send_keys("Updated User")
+            print("Updated name field")
+            
+            save_button = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//button[text()='Save']")))
+            save_button.click()
+            print("Clicked Save button")
+            
+            # Verify update
+            self.driver.refresh()
+            updated_name = self.wait.until(EC.presence_of_element_located((By.ID, "name"))).get_attribute("value")
+            self.assertEqual(updated_name, "Updated User")
+            print("Profile update test passed")
+        except Exception as e:
+            print(f"Profile update test failed: {e}")
+            self.fail("Profile update test failed")
 
     #### EPIC 3: User Flow Efficiency
     def test_epic3_login_process_efficiency(self):
@@ -221,7 +244,7 @@ class FunctionalTests(unittest.TestCase):
     def test_epic4_page_load_times(self):
         print("Starting page load times test...")
         
-        pages = ["student-profile", "adv-search"]
+        pages = ["login", "student-signup", "school-recommendation", "adv-search"]
         for page in pages:
             start_time = time.time()
             self.driver.get(f"{base_url}/{page}")
@@ -236,49 +259,48 @@ class FunctionalTests(unittest.TestCase):
                 print(f"Page load times test failed for {page} page: {e}")
                 self.fail(f"Page load times test failed for {page} page")
 
-    # No Help resources on website
-    # def test_epic5_help_resources(self):
-    #     print("Starting help resources test...")
+    #### EPIC 5: Usability
+    def test_epic5_help_resources(self):
+        print("Starting help resources test...")
         
-    #     pages = ["student-profile", "adv-search"]
-    #     for page in pages:
-    #         print(f"Navigating to {base_url}/{page}")
-    #         self.driver.get(f"{base_url}/{page}")
-    #         print(f"Navigated to {page} page")
+        pages = ["login", "student-signup", "school-recommendation", "adv-search"]
+        for page in pages:
+            print(f"Navigating to {base_url}/{page}")
+            self.driver.get(f"{base_url}/{page}")
+            print(f"Navigated to {page} page")
             
-    #         try:
-    #             time.sleep(2)
-    #             help_link = self.wait.until(EC.presence_of_element_located((By.LINK_TEXT, "Help")))
-    #             help_link.click()
-    #             self.wait.until(EC.presence_of_element_located((By.XPATH, "//h1[text()='Help']")))
-    #             print(f"Help resources are accessible on {page} page")
+            try:
+                time.sleep(2)
+                help_link = self.wait.until(EC.presence_of_element_located((By.LINK_TEXT, "Help")))
+                help_link.click()
+                self.wait.until(EC.presence_of_element_located((By.XPATH, "//h1[text()='Help']")))
+                print(f"Help resources are accessible on {page} page")
                 
-    #             print(f"Help resources test passed on {page} page")
-    #         except Exception as e:
-    #             print(f"Help resources test failed on {page} page: {e}")
-    #             self.fail(f"Help resources test failed on {page} page")
+                print(f"Help resources test passed on {page} page")
+            except Exception as e:
+                print(f"Help resources test failed on {page} page: {e}")
+                self.fail(f"Help resources test failed on {page} page")
     
-    # No instructions on any pages
-    # def test_epic5_instructions_clarity(self):
-    #     print("Starting instructions clarity test...")
+    def test_epic5_instructions_clarity(self):
+        print("Starting instructions clarity test...")
         
-    #     pages = ["student-profile", "adv-search"]
-    #     for page in pages:
-    #         print(f"Navigating to {base_url}/{page}")
-    #         self.driver.get(f"{base_url}/{page}")
-    #         print(f"Navigated to {page} page")
+        pages = ["login", "student-signup", "school-recommendation", "adv-search"]
+        for page in pages:
+            print(f"Navigating to {base_url}/{page}")
+            self.driver.get(f"{base_url}/{page}")
+            print(f"Navigated to {page} page")
             
-    #         try:
-    #             time.sleep(2)
-    #             instructions = self.driver.find_elements(By.XPATH, "//*[contains(text(), 'instructions')]")
-    #             for instruction in instructions:
-    #                 self.assertTrue(instruction.is_displayed(), "Instruction text is not clear or visible")
-    #                 print(f"Instruction text: {instruction.text}")
+            try:
+                time.sleep(2)
+                instructions = self.driver.find_elements(By.XPATH, "//*[contains(text(), 'instructions')]")
+                for instruction in instructions:
+                    self.assertTrue(instruction.is_displayed(), "Instruction text is not clear or visible")
+                    print(f"Instruction text: {instruction.text}")
                 
-    #             print(f"Instructions clarity test passed on {page} page")
-    #         except Exception as e:
-    #             print(f"Instructions clarity test failed on {page} page: {e}")
-    #             self.fail(f"Instructions clarity test failed on {page} page")
+                print(f"Instructions clarity test passed on {page} page")
+            except Exception as e:
+                print(f"Instructions clarity test failed on {page} page: {e}")
+                self.fail(f"Instructions clarity test failed on {page} page")
     
 if __name__ == "__main__":
     unittest.main()
