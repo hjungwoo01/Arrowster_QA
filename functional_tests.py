@@ -33,52 +33,52 @@ class FunctionalTests(unittest.TestCase):
         
         try:
             # Enter GPA
-            gpa_field = self.wait.until(EC.presence_of_element_located((By.XPATH, "//input[@placeholder='GPA']")))
+            gpa_field = self.wait.until(EC.presence_of_element_located((By.XPATH, "(//input)[1]")))
             gpa_field.send_keys("4.0")
             print("Entered GPA")
             time.sleep(2)
             
             # Click and select Grade Level
-            grade_level_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[contains(text(), 'Grade Level')]")))
+            grade_level_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div/section/div/div/div[1]/div/div/form/div[2]")))
             grade_level_field.click()
-            first_choice = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@role='menuitem'][1]")))
+            first_choice = self.wait.until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div/section/div/div/div[1]/div/div/form/div[2]/div[2]/div[1]/input")))
             first_choice.click()
             print("Selected Grade Level: Undergraduate")
-            time.sleep(2)
             
+            time.sleep(2)
             # Click and select Location
-            location_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[contains(text(), 'Location')]")))
+            location_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div/section/div/div/div[1]/div/div/form/div[3]")))
             location_field.click()
-            first_choice = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@role='menuitem'][1]")))
+            first_choice = self.wait.until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div/section/div/div/div[1]/div/div/form/div[3]/div[2]/div[2]")))
             first_choice.click()
             print("Selected Location: United States")
-            time.sleep(2)
             
+            time.sleep(2)
             # Click and select Budget
-            budget_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[contains(text(), 'Budget')]")))
+            budget_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div/section/div/div/div[1]/div/div/form/div[4]")))
             budget_field.click()
-            first_choice = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@role='menuitem'][1]")))
+            first_choice = self.wait.until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div/section/div/div/div[1]/div/div/form/div[4]/div[2]/div[2]/input")))
             first_choice.click()
             print("Selected Budget: $500 - $10,000")
-            time.sleep(2)
             
+            time.sleep(2)
             # Click and select Course Preference
-            course_preference_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[contains(text(), 'Course Preference')]")))
+            course_preference_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div/section/div/div/div[1]/div/div/form/div[5]")))
             course_preference_field.click()
-            first_choice = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@role='menuitem'][1]")))
+            first_choice = self.wait.until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div/section/div/div/div[1]/div/div/form/div[5]/div[2]/div[2]")))
             first_choice.click()
             print("Selected Course Preference: Agricultural Sciences")
-            time.sleep(2)
             
             # Click the "Run Recommendation Engine" button
-            run_button = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Run Recommendation Engine')]")))
+            run_button = self.wait.until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div/section/div/div/div[1]/div/div/form/div[6]/button")))
             run_button.click()
             print("Clicked 'Run Recommendation Engine' button")
             
+            time.sleep(2)
             # Wait for the next page to load 
-            self.wait.until(EC.url_contains("/school-recommendation"))
+            self.wait.until(EC.url_contains("/school-recommendation?data="))
             print("Recommendation successful, redirected to recommendation page")
-            self.assertTrue("/school-recommendation" in self.driver.current_url)
+            self.assertTrue("/school-recommendation?data=" in self.driver.current_url)
             
             print("Recommendation form test passed")
         except Exception as e:
