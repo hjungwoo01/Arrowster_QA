@@ -43,7 +43,7 @@ class MobileCompatibilityTests(unittest.TestCase):
             self.assertTrue(self.driver.find_element(By.XPATH, "/html/body/div[1]/div/section/div/div/div[1]/div/div/form/div[2]").is_displayed(), "Grade Level dropdown is not visible.")
             self.assertTrue(self.driver.find_element(By.XPATH, "/html/body/div[1]/div/section/div/div/div[1]/div/div/form/div[3]").is_displayed(), "Location dropdown is not visible.")
             self.assertTrue(self.driver.find_element(By.XPATH, "/html/body/div[1]/div/section/div/div/div[1]/div/div/form/div[4]").is_displayed(), "Budget dropdown is not visible.")
-            self.assertTrue(self.driver.find_element(By.XPATH, "/html/body/div[1]/div/section/div/div/div[1]/div/div/form/div[5]").is_displayed(), "Course Preference dropdown is not visible.")     
+            self.assertTrue(self.driver.find_element(By.XPATH, "/html/body/div[1]/div/section/div/div/div[1]/div/div/form/div[5]").is_displayed(), "Course Preference dropdown is not visible.")
             self.assertTrue(self.driver.find_element(By.XPATH, "/html/body/div[1]/div/section/div/div/div[1]/div/div/form/div[6]/button").is_displayed(), "Run Recommendation Engine button is not visible.")
             print("Mobile home page test passed")
         except Exception as e:
@@ -75,11 +75,12 @@ class MobileCompatibilityTests(unittest.TestCase):
         except Exception as e:
             print(f"Mobile signup page test failed: {e}")
             self.fail("Mobile signup page test failed")
-            
+
     def test_mobile_navigation(self):
         print("Starting mobile navigation test...")
         self.navigate_to_page("")
         try:
+            # Check for navigation elements
             self.assertTrue(self.driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div/div/div/div/nav/div/div/div[1]/ul/li[1]/a").is_displayed(), "Search on nav bar is not visible.")
             self.assertTrue(self.driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div/div/div/div/nav/div/div/div[1]/ul/li[2]/a").is_displayed(), "Comparisons on nav bar is not visible.")
             print("Mobile navigation test passed")
